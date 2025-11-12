@@ -13,7 +13,6 @@ This document goes over how to customize the Ansible Lockdown **Windows-2022-CIS
     - [3.1 Global Flags and Sections](#31-global-flags-and-sections)
     - [3.2 Individual Rule Toggles](#32-individual-rule-toggles)
     - [3.3 Path Customization](#33-path-customization)
-  - [5. Documentation](#5-documentation)
 
 ---
 
@@ -89,14 +88,6 @@ For example, **domain member maximum password age**:
 win11cis_domain_member_maximum_password_age: 30
 ```
 
-By default, domain members automatically change their domain passwords every 30 days.
-
----
-
-## 5. Documentation
-
-- **Document each customization:** Keep a record of all modified variables.
-- **List baselines:** Include rule ID, description, default state, customized state, and reason for change.
-- **Use tags:** Many tasks include tags (e.g., `level1-memberserver`, `rule_18.9.102.2.2`).
+By default, domain members automatically change their domain passwords every 30 days
 
 ---

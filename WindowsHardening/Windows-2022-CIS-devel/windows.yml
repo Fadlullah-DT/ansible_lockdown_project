@@ -1,9 +1,0 @@
-all:
-  hosts:
-    win2022:
-      ansible_host: 192.168.0.196
-      ansible_user: Administrator
-      ansible_password: P@55word01234567
-      ansible_connection: winrm
-      ansible_winrm_transport: basic
-      ansible_port: 5985

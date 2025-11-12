@@ -11,9 +11,6 @@ netsh advfirewall firewall add rule name="Allow ICMPv4 In" dir=in action=allow p
 
 After that, I could successfully ping the VM from both the host and server.
 
-
-
-
 ### 2.4 Checking WinRM firewall rule
 
 On the VM I checked:
@@ -36,7 +33,7 @@ winrm enumerate winrm/config/listener
 
 Expected output shows something like:
 
-```
+``` powershell
 Transport = HTTP  
 Port = 5985  
 Enabled = true  
@@ -47,7 +44,7 @@ ListeningOn = 192.168.0.183
 
 When I retried the Ansible ping I got:
 
-```
+``` bash
 WinRM error: The WinRM client cannot process the request. Default authentication may be used with an IP address...
 ```
 
@@ -58,7 +55,7 @@ WinRM error: The WinRM client cannot process the request. Default authentication
 Set-Item WSMan:\localhost\Client\TrustedHosts -Value "*" -Force
 ```
 
-*(Note: this is acceptable only for testing; for production it should be more restrictive.)*
+# **(Note: this is acceptable only for testing; for production it should be more restrictive.)**
 
 Next I checked the WinRM service authentication settings:
 
@@ -96,20 +93,5 @@ On the Ansible control node:
 ```bash
 pip install pywinrm requests-credssp
 ```
-
-Inventory example:
-
-```
-[your_section]
-your_windows_host_dns_name ansible_user=ansible_user ansible_password=your_password ansible_port=5986 ansible_connection=winrm ansible_winrm_transport=credssp ansible_winrm_scheme=https ansible_winrm_server_cert_validation=ignore
-```
-
-Initially I got error:
-
-```
-"credssp: requests auth method is credssp, but requests-credssp is not installed"
-```
-
-I either installed `requests-credssp` or switched the transport to `ntlm`, which allowed the connection to succeed.
 
 ---

@@ -1,6 +1,3 @@
-Perfect 👍 — here’s a clean, professional-style documentation section you can add to your **Windows Hardening / Recovery** notes.
-It explains what happened, how to fix it manually, and how to prevent it from happening again in Ansible.
-
 ---
 
 ## 🧱 **Fixing RDP Access After Enforcing Network Level Authentication (NLA)**
@@ -63,49 +60,9 @@ If you still have **console access** (e.g., via Proxmox, Hyper-V, or VMware):
    gpupdate /force
    ```
 
-3. After running these commands, go to:
-
-   ```
-   Settings → System → Remote Desktop
-   ```
-
-   * The toggle should now be available.
-   * Enable **Remote Desktop**.
-   * You should be able to reconnect using RDP without NLA.
-
 ---
 
-### 🛠️ Prevent Future Lockdown Re-application
 
-To prevent Ansible from re-enabling NLA in future runs, set this rule to **false** in your `vars` or main playbook:
-
-```yaml
-win11cis_rule_18_10_56_3_9_4: false
-```
-
-This ensures the Lockdown role skips applying the NLA requirement during subsequent playbook executions.
-
----
-
-### ✅ Summary
-
-| Setting                | Description                         | Default CIS Action | Recommended for Lab |
-| ---------------------- | ----------------------------------- | ------------------ | ------------------- |
-| **UserAuthentication** | Controls NLA for RDP connections    | Enabled (`1`)      | Disabled (`0`)      |
-| **fDenyTSConnections** | Enables or disables RDP connections | Disabled (`1`)     | Enabled (`0`)       |
-
-Disabling NLA is acceptable for **test environments** or **isolated lab networks**, but it should remain **enabled in production** for security.
-
----
-
-Would you like me to add a short **“Troubleshooting RDP Access”** section right after this, summarizing both NLA and service disablement issues (like TermService being off)? That would make your documentation more complete.
-
-
-Got it 👍 — from your screenshot, the message **“Some settings are managed by your organization”** means that **Group Policy or a registry policy** (applied by your Ansible lockdown) is currently **forcing RDP to stay off** and likely enforcing **Network Level Authentication (NLA)** as well.
-
-Here’s how to fix it manually inside the Windows VM:
-
----
 
 ### 🧩 Step 1: Remove the RDP Group Policy Lock
 
@@ -126,30 +83,11 @@ Here’s how to fix it manually inside the Windows VM:
 3. Double-click **“Allow users to connect remotely by using Remote Desktop Services”**
    → Set it to **Enabled**.
 
-4. Next, go to:
 
-   ```
-   Computer Configuration → Administrative Templates → System → Credentials Delegation
-   ```
-
-   Look for **“Require user authentication for remote connections by using Network Level Authentication”**
-   → Set it to **Disabled**.
-
-5. Click **Apply → OK** for each change.
-
----
-
-### 🧹 Step 2: Update Group Policy Immediately
-
-Open PowerShell (as Administrator) and run:
 
 ```powershell
 gpupdate /force
 ```
-
----
-
-### 🖥️ Step 3: Re-enable RDP Manually
 
 Now go back to:
 
@@ -177,4 +115,4 @@ If the switch is still greyed out, remove the enforced policy key:
 
 ---
 
-Would you like me to give you a **single PowerShell script** that will remove the lockdown restrictions, disable NLA, and re-enable RDP in one go? That can save time if you prefer a quick fix.
+
